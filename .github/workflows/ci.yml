@@ -1,0 +1,46 @@
+name: build-and-lint
+
+# This workflow will build and lint the project on push or pull request events to the main and dev branches.
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+# 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+ 
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Lint backend
+        working-directory: backend
+        run: npm run lint -- --max-warnings=0
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Lint frontend
+        working-directory: frontend
+        run: npm run lint -- --max-warnings=0
+
+      - name: Build backend Docker image
+        working-directory: backend
+        run: docker build -t backend .
+
+      - name: Build frontend Docker image
+        working-directory: frontend
+        run: docker build -t frontend .
