@@ -4,12 +4,15 @@ services:
     container_name: todo-app-backend
     restart: always
     env_file:
-    - ./backend/.env
+      - ./backend/.env
     ports:
       - "5001:5001"
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://13.201.76.198:5001/api
     container_name: todo-app-frontend
     restart: always
     ports:
