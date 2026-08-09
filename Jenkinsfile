@@ -14,17 +14,18 @@ pipeline {
                 git url: "https://github.com/Hemant837/todo-app-devops.git", branch: "main"
             }
         }
-        stage("Prepare Environment") {
-            steps {
-                sh '''
-                    mkdir -p backend
-                    cat > backend/.env << EOF
-                PORT=$PORT
-                MONGO_URI=$MONGO_URI
-                EOF
-                '''
-            }
-        }
+stage("Prepare Environment") {
+    steps {
+        sh '''
+            mkdir -p backend
+
+            cat > backend/.env << EOF
+PORT=$PORT
+MONGO_URI=$MONGO_URI
+EOF
+        '''
+    }
+}
         stage("Build Docker Images") {
             steps {
                 sh '''
