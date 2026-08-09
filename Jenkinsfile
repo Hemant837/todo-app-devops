@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage("Checkout Code") {
             steps {
-                git url: "https://github.com/Hemant837/todo-app-devops", branch: "main"
+                git url: "https://github.com/Hemant837/todo-app-devops.git", branch: "main"
             }
         }
         stage("Prepare Environment") {
