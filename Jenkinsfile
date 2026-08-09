@@ -41,7 +41,7 @@ pipeline {
             steps {
                 sh '''
                     echo "Running containers with docker compose..."
-                    docker-compose up -d
+                    docker compose up -d
 
                     echo "showing running containers..."
                     docker ps
