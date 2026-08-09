@@ -19,10 +19,10 @@ pipeline {
                 sh '''
                     mkdir -p backend
                     cat > backend/.env << EOF
-
-                    PORT=$PORT
-                    MONGO_URI=$MONGO_URI
-                    EOF '''
+                PORT=$PORT
+                MONGO_URI=$MONGO_URI
+                EOF
+                '''
             }
         }
         stage("Build Docker Images") {
@@ -33,7 +33,7 @@ pipeline {
 
                     
                     echo "Building frontend image..."
-                    docker build -t $FRONTEND_IMAGE ./frontend --build-arg VITE_API_URL=http://localhost:$PORT/api
+                    docker build -t $FRONTEND_IMAGE ./frontend --build-arg VITE_API_URL=http://localhost:5000/api
                 '''
             }
         }

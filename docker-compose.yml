@@ -1,21 +1,42 @@
 services:
+  mongo:
+    image: mongo:6.0
+    container_name: mongo
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mern-net
+
   backend:
-    build: ./backend
-    container_name: todo-app-backend
-    restart: always
+    # Jenkins already builds this image
+    image: todo-backend:jenkins
+    container_name: backend
+    restart: unless-stopped
     env_file:
       - ./backend/.env
     ports:
-      - "5001:5001"
+      - "5000:5000"
+    depends_on:
+      - mongo
+    networks:
+      - mern-net
 
   frontend:
-    build:
-      context: ./frontend
-      args:
-        VITE_API_URL: http://13.201.76.198:5001/api
-    container_name: todo-app-frontend
-    restart: always
+    # Jenkins already builds this image
+    image: todo-frontend:jenkins
+    container_name: frontend
+    restart: unless-stopped
     ports:
       - "5173:5173"
     depends_on:
       - backend
+    networks:
+      - mern-net
+
+volumes:
+  mongo-data:
+
+networks:
+  mern-net:
+    driver: bridge
